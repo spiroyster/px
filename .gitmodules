@@ -1,0 +1,6 @@
+[submodule "thirdparty/shogl"]
+	path = thirdparty/shogl
+	url = https://github.com/spiroyster/shogl.git
+[submodule "thirdparty/jahoutf"]
+	path = thirdparty/jahoutf
+	url = https://github.com/spiroyster/jahoutf.git
