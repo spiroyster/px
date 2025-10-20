@@ -4,3 +4,6 @@
 [submodule "thirdparty/jahoutf"]
 	path = thirdparty/jahoutf
 	url = https://github.com/spiroyster/jahoutf.git
+[submodule "thirdparty/glo"]
+	path = thirdparty/glo
+	url = https://github.com/spiroyster/glo.git
