@@ -7,3 +7,6 @@
 [submodule "thirdparty/glo"]
 	path = thirdparty/glo
 	url = https://github.com/spiroyster/glo.git
+[submodule "thirdparty/rapidjson"]
+	path = thirdparty/rapidjson
+	url = https://github.com/Tencent/rapidjson.git
