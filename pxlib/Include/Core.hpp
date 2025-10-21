@@ -1,12 +1,12 @@
 #ifndef PX_COREINTERFACE_HPP
 #define PX_COREINTERFACE_HPP
 
-#include "type.hpp"
-#include "version.hpp"
-#include "command.hpp"
-#include "event.hpp"
-#include "exception.hpp"
-#include "task.hpp"
+#include "Type.hpp"
+#include "Version.hpp"
+#include "Command.hpp"
+#include "Event.hpp"
+#include "Exception.hpp"
+#include "Task.hpp"
 
 #include <vector>
 #include <list>

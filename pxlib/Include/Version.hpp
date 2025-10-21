@@ -1,7 +1,7 @@
 #ifndef PX_VERSION_HPP
 #define PX_VERSION_HPP
 
-#include "type.hpp"
+#include "Type.hpp"
 
 namespace px
 {

@@ -11,7 +11,7 @@
 
 namespace px
 {
-	namespace util
+	namespace Util
 	{
 		
 		static char ToLowerCase(char ch)

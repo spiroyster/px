@@ -1,12 +1,12 @@
-#ifndef PX_CLIENT_HPP
-#define PX_CLIENT_HPP
+#ifndef PX_CONTEXT_HPP
+#define PX_CONTEXT_HPP
 
 #include <functional>
 
-#include "interop.hpp"
-#include "version.hpp"
-#include "parameter.hpp"
-#include "exception.hpp"
+#include "Interop.hpp"
+#include "Version.hpp"
+#include "Parameter.hpp"
+#include "Exception.hpp"
 
 namespace px
 {
@@ -16,7 +16,7 @@ namespace px
 	// command
 	// event
 
-	class Handle
+	class Context
 	{
 
 	public:
@@ -24,9 +24,9 @@ namespace px
 		//typedef std::function<void(const String& msg)> MessageCallback;
 		//typedef std::function<void(const Exception& e)> ExceptionCallback;
 
-		Handle(const Parameters& params, InitialiseMessageCallback msg);
+		Context(const Parameters& params, InitialiseMessageCallback msg);
 
-		~Handle();
+		~Context();
 
 		void Idle();
 		void Kill(const Parameters& params = {});
@@ -44,10 +44,6 @@ namespace px
 
 }
 
-//#define PX_KEY(key) \
-//namespace px { namespace ErrorID { static const Exception::ID err = px::String(#err); } }
-
-
 // N.B Client should not use AXW_MAIN or AXW_KILL!!!
 #define PX_MAIN \
 void pxMainImpl();\
@@ -55,17 +51,17 @@ extern "C" __declspec(dllexport) bool pxModuleMain(void* instance)\
 {\
 	try \
 	{\
-		px::Handle::Handshake(instance);\
+		px::Context::Handshake(instance);\
 		pxMainImpl();\
 		return true;\
 	}\
 	catch (const px::Exception& e)\
 	{\
-		px::Handle::ReportException({e});\
+		px::Context::ReportException({e});\
 	}\
 	catch (const std::exception& e)\
 	{\
-		px::Handle::ReportException({px::Exception(e)});\
+		px::Context::ReportException({px::Exception(e)});\
 	}\
 	catch (...)\
 	{\
@@ -88,4 +84,4 @@ extern "C" __declspec(dllexport) void pxModuleKill()\
 }\
 void pxKillImpl()
 
-#endif // PX_CLIENT_HPP
+#endif // PX_CONTEXT_HPP

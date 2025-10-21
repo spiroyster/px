@@ -4,12 +4,12 @@
 #include <filesystem>
 #include <fstream>
 
-#include "px.hpp"
+#include "Exception.hpp"
 #include "String.hpp"
 
 namespace px
 {
-	namespace util
+	namespace Util
 	{
 		class TextFile
 		{

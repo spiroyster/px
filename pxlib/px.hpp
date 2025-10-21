@@ -13,15 +13,27 @@
 // pxg PX graphics engine is a draw engine to be used
 // 
 
-#include "type.hpp"
-#include "exception.hpp"
-#include "mutex.hpp"
-#include "command.hpp"
-#include "handle.hpp"
-#include "event.hpp"
-#include "data.hpp"
+#include "Include/Type.hpp"
+#include "Include/Exception.hpp"
+#include "Include/Mutex.hpp"
+#include "Include/Command.hpp"
+#include "Include/Context.hpp"
+#include "Include/Event.hpp"
 
 #include <functional>
+
+
+#ifndef PX_WIN
+#if defined(WIN32) || defined(_WIN32) || defined(__WIN32__) || defined(__NT__)
+#define PX_WIN
+#endif
+#endif
+
+#ifndef PX_NIX
+#if defined(__linux__) || defined(__unix__)
+#define PX_NIX
+#endif
+#endif
 
 // pX errors...
 PX_ERROR(InstanceInvalid)
@@ -85,10 +97,11 @@ PX_EVENT_1(CommandFail, const px::CommandInterface::Arguments&, arguments)
 PX_EVENT_1(CommandSucceed, const px::CommandInterface::Arguments&, arguments)
 PX_EVENT_1(ModuleInstall, const px::String&, name)
 PX_EVENT_1(ModuleUninstall, const px::String&, name)
-PX_EVENT_1(EntityAdd, const std::shared_ptr<px::Entity>&, entity)
-PX_EVENT_1(EntityRemove, const std::shared_ptr<px::Entity>&, entity)
-PX_EVENT_1(EntityTopology, const std::shared_ptr<px::Entity>&, entity)
-PX_EVENT_1(EntityModify, const std::shared_ptr<px::Entity>&, entity)
+
+//PX_EVENT_1(EntityAdd, const std::shared_ptr<px::Entity>&, entity)
+//PX_EVENT_1(EntityRemove, const std::shared_ptr<px::Entity>&, entity)
+//PX_EVENT_1(EntityTopology, const std::shared_ptr<px::Entity>&, entity)
+//PX_EVENT_1(EntityModify, const std::shared_ptr<px::Entity>&, entity)
 
 //// Task events...
 //AxW_EVENT_1(TaskStart, unsigned int, threadID)
