@@ -110,6 +110,7 @@ public:
 	{
 		context_->Kill();
 	}
+
 };
 
 // Test command valid...
@@ -178,31 +179,53 @@ TEST_F(installModuleCommand, pxInstance, "install pxtestmodule1 command")
 {
 	px::Command({ px::Str("install"), px::Str("pxtestmodule1") });
 	ASSERT(px::Command({ px::Str("command1") }))
-		SUCCEED
+	SUCCEED
 }
 
-TEST_F(pxtestmodule1module2, pxInstance, "modules pxtestmodule1")
+TEST_F(module1module2, pxInstance, "modules pxtestmodule1")
 {
+
 	ASSERT(px::Command({ px::Str("install"), px::Str("pxtestmodule1") }))
-		ASSERT(px::Command({ px::Str("command1") }))
-		ASSERT(px::Command({ px::Str("install"), px::Str("module2") }))
-		ASSERT(px::Command({ px::Str("command1") }))
-		ASSERT(px::Command({ px::Str("command2") }))
-		SUCCEED
+	ASSERT(px::Command({ px::Str("command1") }))
+	ASSERT(px::Command({ px::Str("install"), px::Str("pxtestmodule2") }))
+	ASSERT(px::Command({ px::Str("command1") }))
+	ASSERT(px::Command({ px::Str("command2") }))
+	SUCCEED
 }
 
-TEST_F(pxtestmodule1module2uninstall1, pxInstance, "modules pxtestmodule1")
+TEST_F(module1module2uninstall2command2, pxInstance, "modules pxtestmodule1")
 {
 	ASSERT(px::Command({ px::Str("install"), px::Str("pxtestmodule1") }))
 	ASSERT(px::Command({ px::Str("command1") }))
-	ASSERT(px::Command({ px::Str("install"), px::Str("module2") }))
+	ASSERT(px::Command({ px::Str("install"), px::Str("pxtestmodule2") }))
+	ASSERT(px::Command({ px::Str("command1") }))
+	ASSERT(px::Command({ px::Str("command2") }))
+	ASSERT(px::Command({ px::Str("uninstall"), px::Str("pxtestmodule2") }))
+
+	try
+	{
+		px::Command({ px::Str("command2") });
+		FAIL
+	}
+	catch (...)
+	{
+		SUCCEED
+	}
+}
+
+TEST_F(module1module2uninstall1comman1, pxInstance, "modules pxtestmodule1")
+{
+	ASSERT(px::Command({ px::Str("install"), px::Str("pxtestmodule1") }))
+	ASSERT(px::Command({ px::Str("command1") }))
+	ASSERT(px::Command({ px::Str("command3") }))
+	ASSERT(px::Command({ px::Str("install"), px::Str("pxtestmodule1") }))
 	ASSERT(px::Command({ px::Str("command1") }))
 	ASSERT(px::Command({ px::Str("command2") }))
 	ASSERT(px::Command({ px::Str("uninstall"), px::Str("pxtestmodule1") }))
 
 	try
 	{
-		px::Command({ px::Str("command1") });
+		px::Command({ px::Str("command3") });
 		FAIL
 	}
 	catch (...)

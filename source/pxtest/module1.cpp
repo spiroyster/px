@@ -16,8 +16,8 @@ PX_COMMAND(command1)
 	return true;
 }
 
-PX_COMMAND(command2)
+PX_COMMAND(command4)
 {
-	px::Message(px::Str("module1.command2"));
+	px::Message(px::Str("module1.command3"));
 	return true;
 }
