@@ -13,41 +13,77 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Header Files\px">
+      <UniqueIdentifier>{0be76548-f243-4584-b72e-96f7bf35f06f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Include\px.hpp">
+    <ClInclude Include="..\..\include\px.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Include\Context.hpp">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="..\..\include\px\Command.hpp">
+      <Filter>Header Files\px</Filter>
     </ClInclude>
-    <ClInclude Include="Include\Core.hpp">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="..\..\include\px\Context.hpp">
+      <Filter>Header Files\px</Filter>
     </ClInclude>
-    <ClInclude Include="Include\Event.hpp">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="..\..\include\px\Core.hpp">
+      <Filter>Header Files\px</Filter>
     </ClInclude>
-    <ClInclude Include="Include\Exception.hpp">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="..\..\include\px\data.hpp">
+      <Filter>Header Files\px</Filter>
     </ClInclude>
-    <ClInclude Include="Include\Interop.hpp">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="..\..\include\px\draw.hpp">
+      <Filter>Header Files\px</Filter>
     </ClInclude>
-    <ClInclude Include="Include\Parameter.hpp">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="..\..\include\px\Event.hpp">
+      <Filter>Header Files\px</Filter>
     </ClInclude>
-    <ClInclude Include="Include\Version.hpp">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="..\..\include\px\Exception.hpp">
+      <Filter>Header Files\px</Filter>
     </ClInclude>
-    <ClInclude Include="Include\FileIO.hpp">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="..\..\include\px\FileIO.hpp">
+      <Filter>Header Files\px</Filter>
     </ClInclude>
-    <ClInclude Include="Include\String.hpp">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="..\..\include\px\Interop.hpp">
+      <Filter>Header Files\px</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\px\Mutex.hpp">
+      <Filter>Header Files\px</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\px\Parameter.hpp">
+      <Filter>Header Files\px</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\px\Process.hpp">
+      <Filter>Header Files\px</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\px\project.hpp">
+      <Filter>Header Files\px</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\px\String.hpp">
+      <Filter>Header Files\px</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\px\Task.hpp">
+      <Filter>Header Files\px</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\px\Timer.hpp">
+      <Filter>Header Files\px</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\px\Type.hpp">
+      <Filter>Header Files\px</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\px\Version.hpp">
+      <Filter>Header Files\px</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Source\pxlib.cpp">
+    <ClCompile Include="..\..\source\pxlib\pxlib.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\pxlib\String.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\pxlib\Version.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

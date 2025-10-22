@@ -1,7 +1,7 @@
 #ifndef pxCore_MODULEMANAGER_HPP
 #define pxCore_MODULEMANAGER_HPP
 
-#include <pxlib/px.hpp>
+#include <include/px.hpp>
 
 #include <memory>
 #include <filesystem>

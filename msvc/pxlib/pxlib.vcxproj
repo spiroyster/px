@@ -19,19 +19,30 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Include\Context.hpp" />
-    <ClInclude Include="Include\Core.hpp" />
-    <ClInclude Include="Include\Event.hpp" />
-    <ClInclude Include="Include\Exception.hpp" />
-    <ClInclude Include="Include\FileIO.hpp" />
-    <ClInclude Include="Include\Interop.hpp" />
-    <ClInclude Include="Include\Parameter.hpp" />
-    <ClInclude Include="Include\px.hpp" />
-    <ClInclude Include="Include\String.hpp" />
-    <ClInclude Include="Include\Version.hpp" />
+    <ClInclude Include="..\..\include\px.hpp" />
+    <ClInclude Include="..\..\include\px\Command.hpp" />
+    <ClInclude Include="..\..\include\px\Context.hpp" />
+    <ClInclude Include="..\..\include\px\Core.hpp" />
+    <ClInclude Include="..\..\include\px\data.hpp" />
+    <ClInclude Include="..\..\include\px\draw.hpp" />
+    <ClInclude Include="..\..\include\px\Event.hpp" />
+    <ClInclude Include="..\..\include\px\Exception.hpp" />
+    <ClInclude Include="..\..\include\px\FileIO.hpp" />
+    <ClInclude Include="..\..\include\px\Interop.hpp" />
+    <ClInclude Include="..\..\include\px\Mutex.hpp" />
+    <ClInclude Include="..\..\include\px\Parameter.hpp" />
+    <ClInclude Include="..\..\include\px\Process.hpp" />
+    <ClInclude Include="..\..\include\px\project.hpp" />
+    <ClInclude Include="..\..\include\px\String.hpp" />
+    <ClInclude Include="..\..\include\px\Task.hpp" />
+    <ClInclude Include="..\..\include\px\Timer.hpp" />
+    <ClInclude Include="..\..\include\px\Type.hpp" />
+    <ClInclude Include="..\..\include\px\Version.hpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Source\pxlib.cpp" />
+    <ClCompile Include="..\..\source\pxlib\pxlib.cpp" />
+    <ClCompile Include="..\..\source\pxlib\String.cpp" />
+    <ClCompile Include="..\..\source\pxlib\Version.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
@@ -55,13 +66,13 @@
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v143</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v143</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
@@ -93,9 +104,11 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
+    <OutDir>$(SolutionDir)..\bin\$(Platform)\$(Configuration)\</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
+    <OutDir>$(SolutionDir)..\bin\$(Platform)\$(Configuration)\</OutDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -133,6 +146,8 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+      <AdditionalIncludeDirectories>$(SolutionDir)..</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -147,6 +162,8 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+      <AdditionalIncludeDirectories>$(SolutionDir)..</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>

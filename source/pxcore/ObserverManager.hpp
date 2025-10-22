@@ -1,7 +1,7 @@
 #ifndef pxCore_OBSERVERMANAGER_HPP
 #define pxCore_OBSERVERMANAGER_HPP
 
-#include <pxlib/px.hpp>
+#include <include/px.hpp>
 
 namespace pxCore
 {

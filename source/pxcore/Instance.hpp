@@ -1,7 +1,7 @@
 #ifndef PXCORE_CORE_HPP
 #define PXCORE_CORE_HPP
 
-#include <pxlib/Include/Core.hpp>
+#include <include/px/Core.hpp>
 
 #include <map>
 #include <mutex>

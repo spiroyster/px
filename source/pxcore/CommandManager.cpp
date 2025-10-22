@@ -1,7 +1,7 @@
 #include "CommandManager.hpp"
 
-#include <pxlib/px.hpp>
-#include <pxlib/Include/String.hpp>
+#include <include/px.hpp>
+#include <include/px/String.hpp>
 
 namespace pxCore
 {

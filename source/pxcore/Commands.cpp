@@ -1,7 +1,7 @@
 #include "Instance.hpp"
 
-#include <pxlib/Include/String.hpp>
-#include <pxlib/Include/FileIO.hpp>
+#include <include/px/String.hpp>
+#include <include/px/FileIO.hpp>
 
 #include <filesystem>
 

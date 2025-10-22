@@ -15,36 +15,36 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="CommandManager.hpp">
+    <ClInclude Include="..\..\source\pxcore\CommandManager.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Instance.hpp">
+    <ClInclude Include="..\..\source\pxcore\Instance.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ModuleManager.hpp">
+    <ClInclude Include="..\..\source\pxcore\ModuleManager.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ObserverManager.hpp">
+    <ClInclude Include="..\..\source\pxcore\ObserverManager.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="CommandManager.cpp">
+    <ClCompile Include="..\..\source\pxcore\CommandManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Commands.cpp">
+    <ClCompile Include="..\..\source\pxcore\Commands.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Entry.cpp">
+    <ClCompile Include="..\..\source\pxcore\Entry.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Instance.cpp">
+    <ClCompile Include="..\..\source\pxcore\Instance.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ModuleManager.cpp">
+    <ClCompile Include="..\..\source\pxcore\ModuleManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ObserverManager.cpp">
+    <ClCompile Include="..\..\source\pxcore\ObserverManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

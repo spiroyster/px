@@ -1,6 +1,6 @@
 #include "instance.hpp"
 
-#include <pxlib/px.hpp>
+#include <include/px.hpp>
 
 #define RAPIDJSON_HAS_STDSTRING 1
 #include <thirdparty/rapidjson/include/rapidjson/document.h>

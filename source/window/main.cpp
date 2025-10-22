@@ -4,7 +4,7 @@
 #include <thirdparty/glo/include/glo.hpp>
 
 
-#include <pxlib/px.hpp>
+#include <px.hpp>
 
 namespace
 {

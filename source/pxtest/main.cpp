@@ -1,5 +1,5 @@
 #include <thirdparty/jahoutf/include/jahoutf.hpp>
-#include <pxlib/px.hpp>
+#include <include/px.hpp>
 
 JAHOUTF_TEST_RUNNER{ RUNALL }
 

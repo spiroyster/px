@@ -1,4 +1,4 @@
-#include <pxlib/px.hpp>
+#include <px.hpp>
 
 PX_MAIN
 {

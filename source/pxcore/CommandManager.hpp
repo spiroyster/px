@@ -1,7 +1,7 @@
 #ifndef pxCore_COMMANDMANAGER_HPP
 #define pxCore_COMMANDMANAGER_HPP
 
-#include <pxlib/px.hpp>
+#include <include/px.hpp>
 
 namespace pxCore
 {

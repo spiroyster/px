@@ -1,6 +1,6 @@
-#include "../px.hpp"
-#include "../Core.hpp"
-#include "../Interop.hpp"
+#include <include/px.hpp>
+#include <include/px/Core.hpp>
+#include <include/px/Interop.hpp>
 
 #include <filesystem>
 

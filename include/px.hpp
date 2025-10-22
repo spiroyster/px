@@ -13,12 +13,12 @@
 // pxg PX graphics engine is a draw engine to be used
 // 
 
-#include "Include/Type.hpp"
-#include "Include/Exception.hpp"
-#include "Include/Mutex.hpp"
-#include "Include/Command.hpp"
-#include "Include/Context.hpp"
-#include "Include/Event.hpp"
+#include "px/Type.hpp"
+#include "px/Exception.hpp"
+#include "px/Mutex.hpp"
+#include "px/Command.hpp"
+#include "px/Context.hpp"
+#include "px/Event.hpp"
 
 #include <functional>
 

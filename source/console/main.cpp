@@ -1,4 +1,4 @@
-#include <pxlib/px.hpp>
+#include <include/px.hpp>
 
 #include <iostream>
 
