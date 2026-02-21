@@ -23,26 +23,43 @@
     <ClInclude Include="..\..\include\px\Command.hpp" />
     <ClInclude Include="..\..\include\px\Context.hpp" />
     <ClInclude Include="..\..\include\px\Core.hpp" />
-    <ClInclude Include="..\..\include\px\data.hpp" />
-    <ClInclude Include="..\..\include\px\draw.hpp" />
+    <ClInclude Include="..\..\include\px\Data.hpp" />
+    <ClInclude Include="..\..\include\px\Display.hpp" />
+    <ClInclude Include="..\..\include\px\Draw.hpp" />
+    <ClInclude Include="..\..\include\px\Draw\Colour.hpp" />
+    <ClInclude Include="..\..\include\px\Draw\Image.hpp" />
+    <ClInclude Include="..\..\include\px\Draw\Material.hpp" />
+    <ClInclude Include="..\..\include\px\Draw\Object.hpp" />
+    <ClInclude Include="..\..\include\px\Draw\Paint.hpp" />
+    <ClInclude Include="..\..\include\px\Draw\Texture.hpp" />
+    <ClInclude Include="..\..\include\px\Draw\View.hpp" />
     <ClInclude Include="..\..\include\px\Event.hpp" />
     <ClInclude Include="..\..\include\px\Exception.hpp" />
     <ClInclude Include="..\..\include\px\FileIO.hpp" />
+    <ClInclude Include="..\..\include\px\Geometry.hpp" />
+    <ClInclude Include="..\..\include\px\Geometry\AABB.hpp" />
+    <ClInclude Include="..\..\include\px\Geometry\Axis.hpp" />
+    <ClInclude Include="..\..\include\px\Geometry\Matrix.hpp" />
+    <ClInclude Include="..\..\include\px\Geometry\Mesh.hpp" />
+    <ClInclude Include="..\..\include\px\Geometry\Planar.hpp" />
+    <ClInclude Include="..\..\include\px\Geometry\Polyline.hpp" />
+    <ClInclude Include="..\..\include\px\Geometry\Primitive.hpp" />
+    <ClInclude Include="..\..\include\px\Geometry\Trigonometry.hpp" />
+    <ClInclude Include="..\..\include\px\Geometry\Vector.hpp" />
+    <ClInclude Include="..\..\include\px\Geometry\VertexSet.hpp" />
     <ClInclude Include="..\..\include\px\Interop.hpp" />
     <ClInclude Include="..\..\include\px\Mutex.hpp" />
     <ClInclude Include="..\..\include\px\Parameter.hpp" />
     <ClInclude Include="..\..\include\px\Process.hpp" />
-    <ClInclude Include="..\..\include\px\project.hpp" />
     <ClInclude Include="..\..\include\px\String.hpp" />
     <ClInclude Include="..\..\include\px\Task.hpp" />
     <ClInclude Include="..\..\include\px\Timer.hpp" />
     <ClInclude Include="..\..\include\px\Type.hpp" />
+    <ClInclude Include="..\..\include\px\Util\Fill.hpp" />
     <ClInclude Include="..\..\include\px\Version.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\source\pxlib\pxlib.cpp" />
-    <ClCompile Include="..\..\source\pxlib\String.cpp" />
-    <ClCompile Include="..\..\source\pxlib\Version.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
@@ -55,26 +72,26 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v143</PlatformToolset>
+    <PlatformToolset>v145</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v143</PlatformToolset>
+    <PlatformToolset>v145</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v143</PlatformToolset>
+    <PlatformToolset>v145</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v143</PlatformToolset>
+    <PlatformToolset>v145</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>

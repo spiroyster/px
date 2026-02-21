@@ -1,0 +1,6 @@
+#ifndef PXGL_DRAWOBJECT_HPP
+#define PXGL_DRAWOBJECT_HPP
+
+
+
+#endif // PXGL_DRAWOBJECT_HPP

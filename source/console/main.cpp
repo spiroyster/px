@@ -68,7 +68,6 @@ int main(int argc, char** argv)
 			{
 				px::Context::ReportException({ e });
 			}
-
 		}
 
 		// Kill the context

@@ -7,6 +7,8 @@
 #include "Event.hpp"
 #include "Exception.hpp"
 #include "Task.hpp"
+#include "Data.hpp"
+#include "Draw.hpp"
 
 #include <vector>
 #include <list>
@@ -30,10 +32,10 @@ namespace px
 		virtual const std::list<String>& GlobalLockOwners() const = 0;
 
 		// Task manager...
-		/*virtual bool IsMainThread() const = 0;
+		virtual bool IsMainThread() const = 0;
 		virtual unsigned int MainThreadID() = 0;
 		virtual void ProcessTasks() = 0;
-		virtual void AddTask(std::shared_ptr<Task>& task, unsigned int pollingRate) = 0;*/
+		virtual void AddTask(std::shared_ptr<Task>& task, unsigned int pollingRate) = 0;
 
 		// Parameters...
 		virtual Parameters From(const String& syntax) const = 0;
@@ -57,17 +59,28 @@ namespace px
 		virtual void ObserverToFront(ObserverInterface* observer) = 0;
 		virtual std::vector<ObserverInterface*> Subscribers(const ObserverInterface::ID& eventID) = 0;
 
-		// Process manager
-
-		// Project manager
-		/*virtual void EntityAdd(const std::shared_ptr<px::Entity>& entity) = 0;
-		virtual void EntityRemove(const std::shared_ptr<px::Entity>& entity) = 0;
-		virtual void EntityToplogy(const std::shared_ptr<px::Entity>& entity) = 0;
-		virtual std::list<const px::Entity*> EntityImmutable() const = 0;
-		virtual std::list<px::Entity*> EntityMutable() = 0;*/
-
+		// Project Manager...
+		virtual void AddDataModel(const std::shared_ptr<DataModel>& project) = 0;
+		virtual void RemoveDataModel(const String& projectName) = 0;
+		virtual std::shared_ptr<DataModel> LockDataModel(const String& projectName) const = 0;
+		virtual void UnlockDataModel(const String& projectName) const = 0;
+		virtual std::list<String> DataModels() const = 0;
 		
+		// Draw
+		virtual void RegisterDrawObject(px::DrawObject* drawObject) = 0;
+		virtual void UnregisterDrawObject(px::DrawObject* drawObject) = 0;
+		virtual std::vector<px::DrawObject*> DrawObjects() const = 0;
+		virtual void RegisterTexture(px::Texture* texture) = 0;
+		virtual void UnregisterTexture(px::Texture* texture) = 0;
+		virtual std::vector<px::Texture*> Textures() const = 0;
+		virtual void RegisterView(px::View* view) = 0;
+		virtual void UnregisterView(px::View* view) = 0;
+		virtual std::vector<px::View*> Views() const = 0;
 
+
+		// Texture manager...
+
+		// DrawObject manager...
 	};
 }
 

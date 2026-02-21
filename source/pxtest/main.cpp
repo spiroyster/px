@@ -24,7 +24,7 @@ TEST(handleScoped, "handle scoped")
 	}
 	catch (...)
 	{
-		FAIL;
+		FAIL
 	}
 	SUCCEED
 }
@@ -92,6 +92,8 @@ TEST(eventInvokeDestructInvoke, "event invoke destruct")
 
 class pxInstance : public jahoutf::fixture
 {
+protected:
+
 	std::shared_ptr<px::Context> context_;
 	std::shared_ptr<px::Observer::Message> message_;
 
@@ -213,24 +215,61 @@ TEST_F(module1module2uninstall2command2, pxInstance, "modules pxtestmodule1")
 	}
 }
 
-TEST_F(module1module2uninstall1comman1, pxInstance, "modules pxtestmodule1")
+TEST_F(module1module2uninstall1command1, pxInstance, "modules pxtestmodule1")
 {
 	ASSERT(px::Command({ px::Str("install"), px::Str("pxtestmodule1") }))
 	ASSERT(px::Command({ px::Str("command1") }))
-	ASSERT(px::Command({ px::Str("command3") }))
-	ASSERT(px::Command({ px::Str("install"), px::Str("pxtestmodule1") }))
+	ASSERT(px::Command({ px::Str("command4") }))
+	ASSERT(px::Command({ px::Str("install"), px::Str("pxtestmodule2") }))
 	ASSERT(px::Command({ px::Str("command1") }))
 	ASSERT(px::Command({ px::Str("command2") }))
+	ASSERT(px::Command({ px::Str("command4") }))
 	ASSERT(px::Command({ px::Str("uninstall"), px::Str("pxtestmodule1") }))
 
 	try
 	{
-		px::Command({ px::Str("command3") });
+		px::Command({ px::Str("command4") });
 		FAIL
 	}
 	catch (...)
 	{
 		SUCCEED
 	}
+
+}
+
+TEST_F(taskStart, pxInstance, "task invoke")
+{
+	
+	// Create the task...
+	auto task = std::make_shared<px::Task>(
+		[]() 
+		{
+			px::Message(px::Str("Task started."));
+			px::Timer timer;
+			while (timer.Elapsed() < 1500) {}
+		},
+		[]() 
+		{
+			px::Message(px::Str("Task finished."));
+		});
+		
+	// Spawn it...
+	px::Spawn(task, 100);
+
+	// Wait until task finished...
+	px::Timer timer;
+	bool failsafe = false;
+	while (task->Poll() != px::Task::TaskFinished && !failsafe)
+	{
+		context_->Idle();
+		failsafe = timer.Elapsed() >= 4000 ? true : false;
+	}
+		
+	
+	if (failsafe)
+		FAIL
+	else
+		SUCCEED
 
 }

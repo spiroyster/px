@@ -197,16 +197,9 @@ PX_CORE_FUNC void pxCoreKill(InteropString killParam)
 
 PX_CORE_FUNC void pxCoreIdle()
 {
-	//px::System::Mutex mut(px::Str("AxwCoreIdle"));
+	px::Mutex mut(px::Str("AxwCoreIdle"));
 
 	// Process the tasks (N.B this is also done in Render)...
-	//AxWCore::GetInstance().ProcessTasks();
-
-	// Process the animations...
-	//AxWCore::GetInstance().ProcessAnimations();
-
-	// Process the scheduled compute shaders...
-	//if (px::System::Display::AdaptorHandle* displayAdaptor = AxWCore::GetInstance().DisplayAdaptor())
-	//	displayAdaptor->Idle();
+	pxCore::instance_->ProcessTasks();
 
 }

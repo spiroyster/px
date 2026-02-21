@@ -33,7 +33,7 @@ namespace pxCore
 
 	void Instance::Initialise()
 	{
-
+		mainThreadID_ = std::this_thread::get_id();
 	}
 
 	void Instance::Terminate()
@@ -267,4 +267,273 @@ namespace pxCore
 		return result;
 	}
 
+	unsigned int Instance::MainThreadID()
+	{
+		return static_cast<unsigned int>(std::hash<std::thread::id>{}(mainThreadID_));
+	}
+
+	bool Instance::IsMainThread() const
+	{
+		return std::this_thread::get_id() == mainThreadID_;
+	}
+
+	void Instance::ProcessTasks()
+	{
+		// Only process/poll tasks if they are called from main thread...
+		if (!IsMainThread())
+			return;
+
+		std::list<std::shared_ptr<px::Task>> erroredTasks;
+
+		for (auto task = tasks_.begin(); task != tasks_.end();)
+		{
+			auto t = (*task)->Poll();
+
+			try
+			{
+				// Poll the task...
+				switch (t)
+				{
+				case px::Task::TaskPolled:
+					(*task)->Step();
+					break;
+				case px::Task::TaskFinished:
+					px::Message(px::Str("(" + std::to_string(MainThreadID()) + ")-> Finishing task " + std::to_string((*task)->ThreadID()) + "."));
+					(*task)->Finished();
+					break;
+				default:
+					break;
+				}
+			}
+			catch (const px::Exception& e)
+			{
+				(*task)->SetError(e);
+				t = px::Task::TaskErrorer;
+			}
+
+			// If task has finished or errorer, remove it from the list...
+			if (t == px::Task::TaskFinished || t == px::Task::TaskErrorer)
+			{
+				px::Message(px::Str("(" + std::to_string(MainThreadID()) + ")-> Destroying task " + std::to_string((*task)->ThreadID()) + "."));
+				px::Dispatch::TaskFinish((*task)->ThreadID());
+
+				//if (t == AxW::System::Task::TaskErrorer)
+				if (t == px::Task::TaskErrorer)
+					(*task)->Errored(*(*task)->GetError());
+
+				// Remove the task...
+				task = tasks_.erase(task);
+
+				if (tasks_.empty())
+					px::Dispatch::ClientEndIdle();
+
+				px::ReportException({});
+			}
+			else
+				++task;
+		}
+	}
+
+	void Instance::AddTask(std::shared_ptr<px::Task>& task, unsigned int pollingRate)
+	{
+		// Only add tasks if they were created in this thread...
+		if (!IsMainThread())
+			throw px::Exception(px::ErrorID::TaskInitFail,
+				{
+					{ px::TagID::What, px::Str("Task can only be started from main thread") },
+					{ px::TagID::Expected, px::Str(std::to_string(MainThreadID())) },
+					{ px::TagID::Result, px::Str(std::to_string(static_cast<unsigned int>(std::hash<std::thread::id>{}(std::this_thread::get_id())))) },
+					{ px::TagID::Callee, px::Str(__FUNCTION__) }
+				});
+
+		// Set the polling rate of the task...
+		task->PollingRate(pollingRate);
+		tasks_.emplace_back(task);
+
+		// Start the task!!!
+		task->Run();
+
+		px::Message(px::Str("(" + std::to_string(MainThreadID()) + ")-> Starting task " + std::to_string(task->ThreadID()) + " @" + std::to_string(pollingRate) + " ms."));
+		px::Dispatch::TaskStart(task->ThreadID());
+	}
+
+	class Instance::DataModelHandle
+	{
+		// the project...
+		std::shared_ptr<px::DataModel> dataModel_;
+
+		// mutex for this project... think this needs to be 
+		//std::timed_mutex mutex_;
+		std::unique_lock<std::recursive_mutex> lock_;
+		std::recursive_mutex mutex_;
+
+	public:
+		DataModelHandle(const std::shared_ptr<px::DataModel>& dataModel)
+			: dataModel_(dataModel), lock_(mutex_, std::defer_lock)
+		{
+			//AxW::Message(AxW::Str("[" + ThreadID() + "] constructing handle ") + project_->Name());
+		}
+
+		// Request this project...
+		std::shared_ptr<px::DataModel> Get()
+		{
+			// try to lock this mutex...
+			//if (lock_.try_lock_for(200ms))
+			//	return project_;
+			//AxW::Message(AxW::Str("[" + ThreadID() + "] locking ") + project_->Name());
+
+			mutex_.lock();
+
+			//lock_.lock();
+			return dataModel_;
+
+			/*throw AxW::Exception(AxW::Error::ID::SessionProjectTimeout,
+				{
+					{ AxW::Error::Tag::Project, project_->Name() },
+					{ AxW::Error::Tag::Callee, AxW::Str(__FUNCTION__) }
+				});*/
+		}
+
+		void Unlock()
+		{
+			//AxW::Message(AxW::Str("[" + ThreadID() + "] unlocking ") + project_->Name());
+			mutex_.unlock();
+			//lock_.unlock();
+		}
+
+		const px::String& Name() const { return dataModel_->Name(); }
+
+	};
+
+	void Instance::AddDataModel(const std::shared_ptr<px::DataModel>& project)
+	{
+		// find this project...
+		auto dataModelItr = std::find_if(dataModels_.begin(), dataModels_.end(), [&project](const std::shared_ptr<DataModelHandle>& p) { return p->Name() == project->Name(); });
+
+		if (dataModelItr != dataModels_.end())
+			throw px::Exception(px::ErrorID::DataModelAlreadyExists,
+				{
+					{ px::TagID::Name, project->Name() },
+					{ px::TagID::Callee, px::Str(__FUNCTION__) }
+				});
+			
+		// Add the data model and start managing...
+		dataModels_.emplace_back(std::make_shared<DataModelHandle>(project));
+		px::Dispatch::DataModelAdded(project->Name());
+	}
+
+	void Instance::RemoveDataModel(const px::String& projectName)
+	{
+		auto dataModelItr = std::find_if(dataModels_.begin(), dataModels_.end(), [&projectName](const std::shared_ptr<DataModelHandle>& p) { return p->Name() == projectName; });
+
+		if (dataModelItr != dataModels_.end())
+			throw px::Exception(px::ErrorID::DataModelNotFound,
+				{
+					{ px::TagID::Name, projectName },
+					{ px::TagID::Callee, px::Str(__FUNCTION__) }
+				});
+
+		// Add the data model and start managing...
+		dataModels_.erase(dataModelItr);
+		px::Dispatch::DataModelRemoved(projectName);
+	}
+
+	std::shared_ptr<px::DataModel> Instance::LockDataModel(const px::String& projectName) const
+	{
+		auto dataModelItr = std::find_if(dataModels_.begin(), dataModels_.end(), [&projectName](const std::shared_ptr<DataModelHandle>& p) { return p->Name() == projectName; });
+
+		if (dataModelItr != dataModels_.end())
+			throw px::Exception(px::ErrorID::DataModelNotFound,
+				{
+					{ px::TagID::Name, projectName },
+					{ px::TagID::Callee, px::Str(__FUNCTION__) }
+				});
+		
+		return (*dataModelItr)->Get();
+	}
+
+	void Instance::UnlockDataModel(const px::String& projectName) const
+	{
+		auto dataModelItr = std::find_if(dataModels_.begin(), dataModels_.end(), [&projectName](const std::shared_ptr<DataModelHandle>& p) { return p->Name() == projectName; });
+
+		if (dataModelItr != dataModels_.end())
+			(*dataModelItr)->Unlock();
+	}
+
+	std::list<px::String> Instance::DataModels() const
+	{
+		std::list<px::String> result;
+
+		for (auto itr = dataModels_.begin(); itr != dataModels_.end(); ++itr)
+			result.emplace_back((*itr)->Name());
+
+		return result;
+	}
+
+	void Instance::RegisterDrawObject(px::DrawObject* drawObject)
+	{
+		drawManager_.RegisterDrawObject(drawObject);
+	}
+	void Instance::UnregisterDrawObject(px::DrawObject* drawObject)
+	{
+		drawManager_.UnregisterDrawObject(drawObject);
+	}
+	std::vector<px::DrawObject*> Instance::DrawObjects() const
+	{
+		const auto& drawObjects = drawManager_.DrawObjects();
+		std::vector<px::DrawObject*> result(drawObjects.size());
+		
+		auto s = drawObjects.begin();
+		auto d = result.begin();
+		for (; s != drawObjects.end() && d != result.end(); ++s, ++d)
+			*d = s->second;
+
+		return result;
+	}
+	
+	void Instance::RegisterTexture(px::Texture* texture)
+	{
+		drawManager_.RegisterTexture(texture);
+	}
+	
+	void Instance::UnregisterTexture(px::Texture* texture)
+	{
+		drawManager_.UnregisterTexture(texture);
+	}
+	
+	std::vector<px::Texture*> Instance::Textures() const
+	{
+		const auto& textures = drawManager_.Textures();
+		std::vector<px::Texture*> result(textures.size());
+
+		auto s = textures.begin();
+		auto d = result.begin();
+		for (; s != textures.end() && d != result.end(); ++s, ++d)
+			*d = s->second;
+
+		return result;
+	}
+	
+	void Instance::RegisterView(px::View* view)
+	{
+		drawManager_.RegisterView(view);
+	}
+	
+	void Instance::UnregisterView(px::View* view)
+	{
+		drawManager_.UnregisterView(view);
+	}
+	
+	std::vector<px::View*> Instance::Views() const
+	{
+		const auto& views = drawManager_.Views();
+		std::vector<px::View*> result(views.size());
+
+		auto s = views.begin();
+		auto d = result.begin();
+		for (; s != views.end() && d != result.end(); ++s, ++d)
+			*d = s->second;
+
+		return result;
+	}
 }

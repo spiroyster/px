@@ -136,12 +136,29 @@ namespace pxCore
 
 		auto args = px::CommandInterface::Arguments{ arguments.begin() + 1, arguments.end() };
 
-		bool result = itr->second.back()->Invoke(args);
-		if (result)
-			px::Dispatch::CommandSucceed(args);
-		else
-			px::Dispatch::CommandFail(arguments);
-		return result;
+		try
+		{
+			bool result = itr->second.back()->Invoke(args);
+
+			if (result)
+				px::Dispatch::CommandSucceed(args);
+			else
+				px::Dispatch::CommandFail(arguments);
+			return result;
+		}
+		catch (const px::Exception& e)
+		{
+			px::ReportException({ e });
+		}
+		catch (const std::exception& e)
+		{
+			px::ReportException({ px::Exception(e, { { px::TagID::Command, arguments.front() }})});
+		}
+		catch (...)
+		{
+			px::ReportException({ px::Exception(px::ErrorID::UnknownError, { { px::TagID::Command, arguments.front() }}) });
+		}
+		return false;
 	}
 
 	bool CommandManager::CommandIsValid(const px::String& name) const

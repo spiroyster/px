@@ -4,7 +4,7 @@
 // A Generic platorm which provides easy module/plugin usage.
 // A Command pattern
 // An Event pattern
-// A Python
+// A Python script invoker
 // A Task interface (multi threading)
 // A Process interface (child process communication)
 // A GraphDB-esque datamodel with cypher query language support
@@ -17,8 +17,13 @@
 #include "px/Exception.hpp"
 #include "px/Mutex.hpp"
 #include "px/Command.hpp"
+#include "px/Draw.hpp"
 #include "px/Context.hpp"
 #include "px/Event.hpp"
+#include "px/Task.hpp"
+#include "px/Data.hpp"
+#include "px/String.hpp"
+#include "px/Display.hpp"
 
 #include <functional>
 
@@ -57,6 +62,20 @@ PX_ERROR(ModuleLoadFail)
 PX_ERROR(FileNotFound)
 PX_ERROR(FileRead)
 PX_ERROR(FileLineInvalid)
+PX_ERROR(NotKilled)
+PX_ERROR(TaskInitFail)
+PX_ERROR(EntityAlreadyExists)
+PX_ERROR(EntityNotFound)
+PX_ERROR(DataModelAlreadyExists)
+PX_ERROR(DataModelNotFound)
+PX_ERROR(DisplayError)
+PX_ERROR(DrawObjectNotFound)
+PX_ERROR(DrawObjectAlreadyRegistered)
+PX_ERROR(TextureNotFound)
+PX_ERROR(TextureAlreadyRegistered)
+PX_ERROR(ViewNotFound)
+PX_ERROR(ViewAlreadyRegistered)
+PX_ERROR(NYI)
 
 // px tags...
 PX_TAG(Filename)
@@ -73,6 +92,8 @@ PX_TAG(Thread)
 PX_TAG(Offender)
 PX_TAG(Error)
 PX_TAG(Command)
+PX_TAG(Result)
+PX_TAG(Project)
 PX_TAG(Owner)
 PX_TAG(MacroLineNumber)
 PX_TAG(MacroLineSyntax)
@@ -97,35 +118,52 @@ PX_EVENT_1(CommandFail, const px::CommandInterface::Arguments&, arguments)
 PX_EVENT_1(CommandSucceed, const px::CommandInterface::Arguments&, arguments)
 PX_EVENT_1(ModuleInstall, const px::String&, name)
 PX_EVENT_1(ModuleUninstall, const px::String&, name)
+PX_EVENT_1(TaskStart, unsigned int, threadID)
+PX_EVENT_1(TaskFinish, unsigned int, threadID)
+PX_EVENT_2(EntityAdded, const String&, projectName, const String&, entityName)
+PX_EVENT_2(EntityRemoved, const String&, projectName, const String&, entityName)
+PX_EVENT_2(EntityChanged, const String&, projectName, const String&, entityName)
+PX_EVENT_2(EntityTopology, const String&, projectName, const String&, entityName)
+PX_EVENT_1(DataModelAdded, const String&, projectName)
+PX_EVENT_1(DataModelRemoved, const String&, projectName)
+PX_EVENT_1(DataModelChanged, const String&, projectName)
+PX_EVENT_2(DataModelRenamed, const String&, newName, const String&, oldName)
 
-//PX_EVENT_1(EntityAdd, const std::shared_ptr<px::Entity>&, entity)
-//PX_EVENT_1(EntityRemove, const std::shared_ptr<px::Entity>&, entity)
-//PX_EVENT_1(EntityTopology, const std::shared_ptr<px::Entity>&, entity)
-//PX_EVENT_1(EntityModify, const std::shared_ptr<px::Entity>&, entity)
+// Draw events..
+PX_EVENT_1(DrawObjectGeometryChanged, const px::DrawObject&, drawObject)
+PX_EVENT_1(DrawObjectTransformChanged, const px::DrawObject&, drawObject)
+PX_EVENT_1(DrawObjectRegistered, const px::DrawObject&, drawObject)
+PX_EVENT_1(DrawObjectUnregistered, const px::DrawObject&, drawObject)
+PX_EVENT_1(DrawObjectMaterialChanged, const px::DrawObject&, drawObject)
+PX_EVENT_2(DisplayResize, unsigned int, width, unsigned int, height)
+PX_EVENT_1(ViewRegistered, const String&, viewName)
+PX_EVENT_1(ViewUnregistered, const String&, viewName)
+PX_EVENT_1(ViewShow, const View&, view)
+PX_EVENT_1(ViewHide, const View&, view)
+PX_EVENT_1(ViewResize, const View&, view)
+PX_EVENT_1(TextureRegistered, const px::Texture&, texture)
+PX_EVENT_1(TextureUnregistered, const px::Texture&, texture)
+PX_EVENT_1(TextureChanged, const px::Texture&, texture)
 
-//// Task events...
-//AxW_EVENT_1(TaskStart, unsigned int, threadID)
-//AxW_EVENT_1(TaskFinish, unsigned int, threadID)
-//
-//// Client events...
-//AxW_EVENT(ClientStartIdle)
-//AxW_EVENT(ClientEndIdle)
-//AxW_EVENT_1(ClientRedraw, int, displayID)
-//AxW_EVENT_3(ClientOpenFile, const String&, title, const String&, path, const std::vector<String>&, validExtensions)
-//AxW_EVENT_1(ClientOpenFileResult, const String&, filepath)
-//AxW_EVENT_3(ClientMultiOpenFile, const String&, title, const String&, path, const std::vector<String>&, validExtensions)
-//AxW_EVENT_1(ClientMultiOpenFileResult, const std::vector<String>&, filepaths)
-//AxW_EVENT_3(ClientSaveFile, const String&, title, const String&, path, const std::vector<String>&, validExtensions)
-//AxW_EVENT_1(ClientSaveFileResult, const String&, filepath)
-//AxW_EVENT_2(ClientChooseFolder, const String&, title, const String&, path)
-//AxW_EVENT_1(ClientChooseFolderResult, const String&, filepath)
-//AxW_EVENT_3(ClientQuestion, const String&, title, const String&, question, const std::vector<String>&, answers)
-//AxW_EVENT_1(ClientQuestionResult, const String&, answer)
-//AxW_EVENT_2(ClientMessageBox, const String&, title, const String&, message)
-//AxW_EVENT_1(ClientMousePointer, int, pointer)
-//AxW_EVENT_1(ClientDropFiles, const std::vector<String>&, droppedFiles)
-//AxW_EVENT(ClientStartAnimation)
-//AxW_EVENT(ClientEndAnimation)
+// Client events...
+PX_EVENT(ClientStartIdle)
+PX_EVENT(ClientEndIdle)
+PX_EVENT_1(ClientRedraw, int, displayID)
+PX_EVENT_3(ClientOpenFile, const String&, title, const String&, path, const std::vector<String>&, validExtensions)
+PX_EVENT_1(ClientOpenFileResult, const String&, filepath)
+PX_EVENT_3(ClientMultiOpenFile, const String&, title, const String&, path, const std::vector<String>&, validExtensions)
+PX_EVENT_1(ClientMultiOpenFileResult, const std::vector<String>&, filepaths)
+PX_EVENT_3(ClientSaveFile, const String&, title, const String&, path, const std::vector<String>&, validExtensions)
+PX_EVENT_1(ClientSaveFileResult, const String&, filepath)
+PX_EVENT_2(ClientChooseFolder, const String&, title, const String&, path)
+PX_EVENT_1(ClientChooseFolderResult, const String&, filepath)
+PX_EVENT_3(ClientQuestion, const String&, title, const String&, question, const std::vector<String>&, answers)
+PX_EVENT_1(ClientQuestionResult, const String&, answer)
+PX_EVENT_2(ClientMessageBox, const String&, title, const String&, message)
+PX_EVENT_1(ClientMousePointer, int, pointer)
+PX_EVENT_1(ClientDropFiles, const std::vector<String>&, droppedFiles)
+PX_EVENT(ClientStartAnimation)
+PX_EVENT(ClientEndAnimation)
 
 
 namespace px

@@ -8,6 +8,8 @@
 #include <Windows.h>
 #include <codecvt>
 #include <locale>
+
+#include <iostream>
 #endif // PX_WIN
 
 #ifdef PX_NIX
@@ -27,7 +29,7 @@ namespace px
 		static const String Date = Str(__DATE__);
 		static const String Time = Str(__TIME__);
 	}
-	
+
 	namespace
 	{
 		static std::filesystem::path pxModuleFilename;
@@ -140,7 +142,7 @@ namespace px
 				}
 			}
 		}
-		
+
 	}
 
 	String Str(const std::string& s)
@@ -159,7 +161,7 @@ namespace px
 	Exception::Exception()
 		: id_(ErrorID::UnknownError)
 	{
-		//meta_[TagID::Thread] = Str(std::to_string(static_cast<unsigned int>(std::hash<std::thread::id>{}(std::this_thread::get_id()))));
+		meta_[TagID::Thread] = Str(std::to_string(static_cast<unsigned int>(std::hash<std::thread::id>{}(std::this_thread::get_id()))));
 		meta_[TagID::Offender] = Context::Name();
 		meta_[TagID::Error] = id_;
 	}
@@ -167,7 +169,7 @@ namespace px
 	Exception::Exception(const Exception::ID& id, const Parameters& meta)
 		: id_(id), meta_(meta)
 	{
-		//meta_[TagID::Thread] = Str(std::to_string(static_cast<unsigned int>(std::hash<std::thread::id>{}(std::this_thread::get_id()))));
+		meta_[TagID::Thread] = Str(std::to_string(static_cast<unsigned int>(std::hash<std::thread::id>{}(std::this_thread::get_id()))));
 		meta_[TagID::Offender] = Context::Name();
 		meta_[TagID::Error] = id_;
 	}
@@ -175,9 +177,11 @@ namespace px
 	Exception::Exception(const std::exception& e, const Parameters& meta)
 		: id_(ErrorID::StdException), meta_(meta)
 	{
-		//meta_[TagID::Thread] = Str(std::to_string(static_cast<unsigned int>(std::hash<std::thread::id>{}(std::this_thread::get_id()))));
+		meta_[TagID::Thread] = Str(std::to_string(static_cast<unsigned int>(std::hash<std::thread::id>{}(std::this_thread::get_id()))));
 		meta_[TagID::Offender] = Context::Name();
 		meta_[TagID::Error] = id_;
+		meta_[TagID::What] = px::Str(e.what());
+
 	}
 
 	// Version...
@@ -253,7 +257,7 @@ namespace px
 
 		// Since this module itsef could have commands...
 		Handshake(instance);
-		
+
 		// On this occasion output the version summary and welcome message...
 		GetCoreInstance().Message(Name() + Str(" ") + Version().Summary());
 	}
@@ -262,8 +266,12 @@ namespace px
 	{
 		// Free the library...
 		if (handle)
+		{
+			if (coreConnected)
+				Kill({});
 			FreeLibrary(static_cast<HINSTANCE>(handle));
-		handle = nullptr;
+			handle = nullptr;
+		}
 		coreInstance = nullptr;
 	}
 
@@ -289,7 +297,7 @@ namespace px
 			// Free the library...
 			if (handle)
 				FreeLibrary(static_cast<HINSTANCE>(handle));
-			
+
 			handle = nullptr;
 			coreInstance = nullptr;
 		}
@@ -525,4 +533,340 @@ namespace px
 	{
 		GetCoreInstance().ReportException(e);
 	}
+
+	Task::Task()
+		: function_([]() {}), stepCallback_(nullptr), finishCallback_(nullptr)
+	{
+		std::atomic_init(&taskState_, Task::TaskNotStarted);
+	}
+
+	Task::Task(Function func)
+		: function_(func), stepCallback_(nullptr), finishCallback_(nullptr)
+	{
+		std::atomic_init(&taskState_, Task::TaskNotStarted);
+	}
+
+	Task::Task(Function func, FinishCallback finish)
+		: function_(func), stepCallback_(nullptr), finishCallback_(finish)
+	{
+		std::atomic_init(&taskState_, Task::TaskNotStarted);
+	}
+
+	Task::Task(Function func, StepCallback step, FinishCallback finish)
+		: function_(func), stepCallback_(step), finishCallback_(finish)
+	{
+		std::atomic_init(&taskState_, Task::TaskNotStarted);
+	}
+
+	Task::~Task()
+	{
+		thread_.join();
+	}
+
+	void Task::Run()
+	{
+		thread_ = std::thread( std::bind(InvokeTask, function_, this) );
+		id_ = thread_.get_id();
+	}
+
+	// Called by main thread to check if to call update
+	Task::State Task::Poll()
+	{
+		if (taskState_ == Task::TaskNotStarted || taskState_ == Task::TaskErrorer)
+			return taskState_;
+
+		if (timer_.Elapsed() >= pollRate_)
+		{
+			timer_.Reset();
+			return Task::State::TaskPolled;
+		}
+		return taskState_;
+	}
+
+	unsigned int Task::ThreadID() const
+	{
+		return static_cast<unsigned int>(std::hash<std::thread::id>{}(id_));
+	}
+
+	void Task::InvokeTask(Task::Function task, Task* owner)
+	{
+		try
+		{
+			owner->taskState_ = Task::State::TaskRunning;
+			task();
+			owner->taskState_ = Task::State::TaskFinished;
+		}
+		catch (const px::Exception& e)
+		{
+			px::ReportException({ e });
+			owner->SetError(e);
+			owner->taskState_ = Task::State::TaskErrorer;
+		}
+		catch (const std::exception& e)
+		{
+			px::ReportException({ e });
+			owner->SetError(e);
+			owner->taskState_ = Task::State::TaskErrorer;
+		}
+		catch (...)
+		{
+			px::Exception e(px::ErrorID::UnknownError);
+			owner->SetError(e);
+			px::ReportException({ e });
+			owner->taskState_ = Task::State::TaskErrorer;
+		}
+	}
+
+	void Spawn(std::shared_ptr<Task> task, unsigned int pollingRate)
+	{
+		GetCoreInstance().AddTask(task, pollingRate);
+	}
+
+	bool IsMainThread()
+	{
+		// Check this call is from the main thread...
+		return GetCoreInstance().IsMainThread();
+	}
+
+	ConditionalWait::ConditionalWait() : finished_(false) {}
+
+	void ConditionalWait::Wait()
+	{
+		std::unique_lock<std::mutex> lck(mutex_);
+		conditional_variable_.wait(lck, [=] { return finished_; });
+	}
+
+	void ConditionalWait::Finished()
+	{
+		std::lock_guard<std::mutex> lck(mutex_);
+		finished_ = true;
+		conditional_variable_.notify_one();
+	}
+
+	// DataModel...
+	DataModel::DataModel(const String& projectName)
+		:	name_(projectName)
+	{
+	}
+
+	DataModel::~DataModel()
+	{
+		// Dispatch project removed event...
+		FlushEntities();
+		FlushRelationships();
+		px::Dispatch::DataModelRemoved(name_);
+	}
+
+	// Entities
+	std::shared_ptr<const Entity> DataModel::AddEntity(const std::shared_ptr<Entity>& entity)
+	{
+		// Find an entity with this name...
+		auto itr = std::find_if(entities_.begin(), entities_.end(), [&entity](const std::shared_ptr<Entity>& ent) { return ent->Name() == entity->Name(); });
+
+		if (itr != entities_.end())
+			throw Exception(ErrorID::EntityAlreadyExists,
+				{
+					{ TagID::Name, entity->Name() },
+					{ TagID::Project, name_ },
+					{ TagID::Callee, Str(__FUNCTION__) }
+				});
+	
+		entities_.emplace_back(entity);
+		return entity;
+	}
+
+	void DataModel::RemoveEntity(const String& name)
+	{
+		// Find an entity with this name...
+		auto itr = std::find_if(entities_.begin(), entities_.end(), [&name](const std::shared_ptr<Entity>& ent) { return ent->Name() == name; });
+
+		if (itr == entities_.end())
+			throw Exception(ErrorID::EntityNotFound,
+				{
+					{ TagID::Name, name },
+					{ TagID::Project, name_ },
+					{ TagID::Callee, Str(__FUNCTION__) }
+				});
+
+		// Copy the name, since when removed if this was called pointing to entity string, that will be gone when it comes to dispatch the event...
+		String entityRemovedName = name;
+
+		// Remove the entity...
+		entities_.erase(itr);
+		px::Dispatch::EntityRemoved(name_, entityRemovedName);
+	}
+
+	std::list<const Entity*> DataModel::Entities(const std::function<bool(const Entity&)>& predicate) const
+	{
+		std::list<const Entity*> result;
+
+		for (auto itr = entities_.begin(); itr != entities_.end(); ++itr)
+			if (predicate(**itr))
+				result.emplace_back(itr->get());
+
+		return result;
+	}
+
+	std::list<Entity*> DataModel::Entities(const std::function<bool(const Entity&)>& predicate)
+	{
+		std::list<Entity*> result;
+
+		for (auto itr = entities_.begin(); itr != entities_.end(); ++itr)
+			if (predicate(**itr))
+				result.emplace_back(itr->get());
+
+		return result;
+	}
+
+	std::shared_ptr<Entity> DataModel::GetEntity(const String& entityName) const
+	{
+		for (auto itr = entities_.begin(); itr != entities_.end(); ++itr)
+		{
+			if ((*itr)->Name() == entityName)
+				return *itr;
+		}
+		return std::shared_ptr<Entity>();
+	}
+
+	// Flush...
+	void DataModel::FlushEntities()
+	{
+
+	}
+
+	void DataModel::FlushRelationships()
+	{
+
+	}
+
+	void AddDataModel(const std::shared_ptr<DataModel>& project)
+	{
+		// Add this project to the core intstance...
+		GetCoreInstance().AddDataModel(project);
+	}
+
+	void RemoveProject(const String& projectName)
+	{
+		// Remove this project (and flush it) from the core instance...
+		GetCoreInstance().RemoveDataModel(projectName);
+	}
+
+	std::list<String> DataModels()
+	{
+		return GetCoreInstance().DataModels();
+	}
+
+	DataModelHandle::DataModelHandle(const String& projectName)
+		: handle_(GetCoreInstance().LockDataModel(projectName))
+	{
+	}
+
+	DataModelHandle::~DataModelHandle()
+	{
+		GetCoreInstance().UnlockDataModel(handle_->Name());
+	}
+
+	// Draw objects...
+
+	// Texture...
+	Texture::Texture(const String& name, const std::shared_ptr<Image2DInterface>& image)
+		: name_(name), image_(image)
+	{
+		GetCoreInstance().RegisterTexture(this);
+	}
+
+	Texture::~Texture()
+	{
+		GetCoreInstance().UnregisterTexture(this);
+	}
+
+	void Texture::SetImage(const std::shared_ptr<Image2DInterface>& image)
+	{
+		image_ = image;
+		Dispatch::TextureChanged(*this);
+	}
+
+	// Draw Object...
+	/*DrawObject::DrawObject(const String& name) : name_(name)
+	{
+		GetCoreInstance().RegisterDrawObject(this);
+	}
+
+	DrawObject::~DrawObject()
+	{
+		GetCoreInstance().UnregisterDrawObject(this);
+	}*/
+
+
+	// View...
+	View::View(const String& name)
+		: viewName_(name), viewWidth_(1), viewHeight_(1)
+	{
+		GetCoreInstance().RegisterView(this);
+	}
+
+	View::~View()
+	{
+		GetCoreInstance().UnregisterView(this);
+	}
+
+	void View::Resize(unsigned int width, unsigned int height)
+	{
+		// Resize...
+		float widthRatio = static_cast<float>(width) / static_cast<float>(viewWidth_);
+		float heightRatio = static_cast<float>(height) / static_cast<float>(viewHeight_);
+
+		// If height and width are not 0, resize the camera and assign new width and height...
+		if (width && height)
+		{
+			viewWidth_ = width;
+			viewHeight_ = height;
+
+			// Resize the camera...
+			camera_.width_ *= widthRatio;
+			camera_.height_ *= heightRatio;
+		}
+
+		// Call layout items on our GUI controls...
+		Layout();
+	}
+
+	void View::Show(int displayID)
+	{
+		// Dispatch the event to say set new active view...
+		Dispatch::ViewShow(*this);
+
+		// Resize will be called next, and layout will be called as a result of resize...
+	}
+
+	void View::Hide()
+	{
+		Dispatch::ViewHide(*this);
+		//if (!displayID_)
+		//	throw AxW::Exception(Error::ID::DisplayViewInactive,
+		//		{
+		//			{ Error::Tag::Name, viewName_ },
+		//			{ Error::Tag::Callee, AxW::Str(__FUNCTION__) }
+		//		});
+
+		//// Dispatch the event to say set new active view...
+		//if (displayID_)
+		//	EventDispatch::ViewHide(*displayID_, viewName_);
+
+		//displayID_ = std::optional<int>();
+	}
+
+	void View::PushActionInterface(std::shared_ptr<ActionInterface> dai)
+	{
+		actionInterfaceStack_.push_back(dai);
+	}
+
+	void View::PopActionInterface(const String& name)
+	{
+		auto itr = std::find_if(actionInterfaceStack_.begin(), actionInterfaceStack_.end(), [&name](const std::shared_ptr<ActionInterface>& actionInterface) { return actionInterface->ActionInterfaceName() == name; });
+		if (itr != actionInterfaceStack_.end())
+			actionInterfaceStack_.erase(itr);
+	}
+	// Control...
+
 }

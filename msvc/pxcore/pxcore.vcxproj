@@ -20,17 +20,23 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\source\pxcore\CommandManager.hpp" />
+    <ClInclude Include="..\..\source\pxcore\DataModelManager.hpp" />
+    <ClInclude Include="..\..\source\pxcore\DrawManager.hpp" />
     <ClInclude Include="..\..\source\pxcore\Instance.hpp" />
     <ClInclude Include="..\..\source\pxcore\ModuleManager.hpp" />
     <ClInclude Include="..\..\source\pxcore\ObserverManager.hpp" />
+    <ClInclude Include="..\..\source\pxcore\TaskManager.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\source\pxcore\CommandManager.cpp" />
     <ClCompile Include="..\..\source\pxcore\Commands.cpp" />
+    <ClCompile Include="..\..\source\pxcore\DataModelManager.cpp" />
+    <ClCompile Include="..\..\source\pxcore\DrawManager.cpp" />
     <ClCompile Include="..\..\source\pxcore\Entry.cpp" />
     <ClCompile Include="..\..\source\pxcore\Instance.cpp" />
     <ClCompile Include="..\..\source\pxcore\ModuleManager.cpp" />
     <ClCompile Include="..\..\source\pxcore\ObserverManager.cpp" />
+    <ClCompile Include="..\..\source\pxcore\TaskManager.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
@@ -43,26 +49,26 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v143</PlatformToolset>
+    <PlatformToolset>v145</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v143</PlatformToolset>
+    <PlatformToolset>v145</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v143</PlatformToolset>
+    <PlatformToolset>v145</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v143</PlatformToolset>
+    <PlatformToolset>v145</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>

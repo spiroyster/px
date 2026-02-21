@@ -16,6 +16,18 @@
     <Filter Include="Header Files\px">
       <UniqueIdentifier>{0be76548-f243-4584-b72e-96f7bf35f06f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\px\Geometry">
+      <UniqueIdentifier>{83cd4bd6-a1a8-4b41-b634-8d0970e23a48}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\px\Draw">
+      <UniqueIdentifier>{9f0bcd29-b21c-4f34-95c5-edfdee04bc7d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\px\Util">
+      <UniqueIdentifier>{59ef3ded-8060-4582-ad21-407457b85f4d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\px\System">
+      <UniqueIdentifier>{69e40458-ea4c-488a-98e9-d3594f9ff5b3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\include\px.hpp">
@@ -27,13 +39,7 @@
     <ClInclude Include="..\..\include\px\Context.hpp">
       <Filter>Header Files\px</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\px\Core.hpp">
-      <Filter>Header Files\px</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\px\data.hpp">
-      <Filter>Header Files\px</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\px\draw.hpp">
+    <ClInclude Include="..\..\include\px\Data.hpp">
       <Filter>Header Files\px</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\px\Event.hpp">
@@ -42,48 +48,105 @@
     <ClInclude Include="..\..\include\px\Exception.hpp">
       <Filter>Header Files\px</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\px\FileIO.hpp">
-      <Filter>Header Files\px</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\px\Interop.hpp">
-      <Filter>Header Files\px</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\px\Mutex.hpp">
-      <Filter>Header Files\px</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\include\px\Parameter.hpp">
-      <Filter>Header Files\px</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\px\Process.hpp">
-      <Filter>Header Files\px</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\px\project.hpp">
-      <Filter>Header Files\px</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\px\String.hpp">
-      <Filter>Header Files\px</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\px\Task.hpp">
-      <Filter>Header Files\px</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\px\Timer.hpp">
       <Filter>Header Files\px</Filter>
     </ClInclude>
     <ClInclude Include="..\..\include\px\Type.hpp">
       <Filter>Header Files\px</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\px\Version.hpp">
+    <ClInclude Include="..\..\include\px\String.hpp">
+      <Filter>Header Files\px\Util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\px\FileIO.hpp">
+      <Filter>Header Files\px\Util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\px\Draw\Colour.hpp">
+      <Filter>Header Files\px\Draw</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\px\Draw\Image.hpp">
+      <Filter>Header Files\px\Draw</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\px\Draw\View.hpp">
+      <Filter>Header Files\px\Draw</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\px\Draw.hpp">
       <Filter>Header Files\px</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\px\Draw\Texture.hpp">
+      <Filter>Header Files\px\Draw</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\px\Draw\Material.hpp">
+      <Filter>Header Files\px\Draw</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\px\Draw\Object.hpp">
+      <Filter>Header Files\px\Draw</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\px\Geometry\AABB.hpp">
+      <Filter>Header Files\px\Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\px\Geometry\Matrix.hpp">
+      <Filter>Header Files\px\Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\px\Geometry\Mesh.hpp">
+      <Filter>Header Files\px\Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\px\Geometry\Polyline.hpp">
+      <Filter>Header Files\px\Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\px\Geometry\Vector.hpp">
+      <Filter>Header Files\px\Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\px\Geometry\VertexSet.hpp">
+      <Filter>Header Files\px\Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\px\Geometry\Primitive.hpp">
+      <Filter>Header Files\px\Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\px\Geometry.hpp">
+      <Filter>Header Files\px</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\px\Geometry\Axis.hpp">
+      <Filter>Header Files\px\Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\px\Geometry\Trigonometry.hpp">
+      <Filter>Header Files\px\Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\px\Util\Fill.hpp">
+      <Filter>Header Files\px\Util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\px\Geometry\Planar.hpp">
+      <Filter>Header Files\px\Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\px\Draw\Paint.hpp">
+      <Filter>Header Files\px\Draw</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\px\Core.hpp">
+      <Filter>Header Files\px\System</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\px\Display.hpp">
+      <Filter>Header Files\px\System</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\px\Interop.hpp">
+      <Filter>Header Files\px\System</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\px\Process.hpp">
+      <Filter>Header Files\px\System</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\px\Task.hpp">
+      <Filter>Header Files\px\System</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\px\Timer.hpp">
+      <Filter>Header Files\px\System</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\px\Mutex.hpp">
+      <Filter>Header Files\px\System</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\px\Version.hpp">
+      <Filter>Header Files\px\System</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\source\pxlib\pxlib.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\source\pxlib\String.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\source\pxlib\Version.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

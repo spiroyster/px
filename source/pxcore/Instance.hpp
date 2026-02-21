@@ -9,6 +9,7 @@
 #include "CommandManager.hpp"
 #include "ObserverManager.hpp"
 #include "ModuleManager.hpp"
+#include "DrawManager.hpp"
 
 namespace pxCore
 {
@@ -25,7 +26,16 @@ namespace pxCore
 		ModuleManager moduleManager_;
 		ObserverManager observerManager_;
 		CommandManager commandManager_;
+		DrawManager drawManager_;
+		
 		// task manager...
+		std::list<std::shared_ptr<px::Task>> tasks_;
+		std::thread::id mainThreadID_;
+
+		// data models..
+		class DataModelHandle;
+
+		std::list<std::shared_ptr<DataModelHandle>> dataModels_;
 
 	public:
 
@@ -45,11 +55,11 @@ namespace pxCore
 		const std::list<px::String>& GlobalLockOwners() const;
 
 		// Task manager...
-		/*bool IsMainThread() const;
 		unsigned int MainThreadID();
+		bool IsMainThread() const;
 		void ProcessTasks();
-		void AddTask(std::shared_ptr<Task>& task, unsigned int pollingRate);*/
-
+		void AddTask(std::shared_ptr<px::Task>& task, unsigned int pollingRate);
+		
 		// Parameters...
 		px::Parameters From(const px::String& syntax) const;
 		px::String To(const px::Parameters& parameters) const;
@@ -71,7 +81,6 @@ namespace pxCore
 		bool CommandIsValid(const px::CommandInterface* command) const;
 		std::vector<const px::CommandInterface*> CommandList() const;
 		
-
 		// Event manager
 		void RegisterObserver(px::ObserverInterface* observer);
 		void UnregisterObserver(px::ObserverInterface* observer);
@@ -79,6 +88,25 @@ namespace pxCore
 		void ObserverToFront(px::ObserverInterface* observer);
 		std::vector<px::ObserverInterface*> Subscribers(const px::ObserverInterface::ID& eventID);
 
+		// Project Manager...
+		void AddDataModel(const std::shared_ptr<px::DataModel>& project);
+		void RemoveDataModel(const px::String& projectName);
+		std::shared_ptr<px::DataModel> LockDataModel(const px::String& projectName) const;
+		void UnlockDataModel(const px::String& projectName) const;
+		std::list<px::String> DataModels() const;
+
+		// Draw manager...
+		void RegisterDrawObject(px::DrawObject* drawObject);
+		void UnregisterDrawObject(px::DrawObject* drawObject);
+		std::vector<px::DrawObject*> DrawObjects() const;
+		void RegisterTexture(px::Texture* texture);
+		void UnregisterTexture(px::Texture* texture);
+		std::vector<px::Texture*> Textures() const;
+		void RegisterView(px::View* view);
+		void UnregisterView(px::View* view);
+		std::vector<px::View*> Views() const;
+
+		// GUI Manager...
 	};
 
 	extern Instance& GetInstance();

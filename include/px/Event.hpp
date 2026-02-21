@@ -5,6 +5,7 @@
 #include "mutex.hpp"
 
 #include <vector>
+#include <functional>
 
 namespace px
 {

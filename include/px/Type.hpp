@@ -21,6 +21,9 @@ namespace px
 	String Str(const std::wstring& s);
 
 	std::string ToStr(const String& str);
+
+	struct Coordinate { int x_, y_; };
+
 }
 
 #endif // PX_TYPE_HPP
