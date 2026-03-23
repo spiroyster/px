@@ -7,6 +7,20 @@ namespace px
 {
 	namespace Geometry
 	{
+		class Geometric
+		{
+		public:
+			virtual ~Geometric() {}
+
+			virtual unsigned int PointCount() const = 0;
+			virtual unsigned int NormalCount() const = 0;
+
+			virtual const AABB& AABBImmutable() const = 0;
+			virtual void CalculateAABB() = 0;
+
+			virtual std::shared_ptr<Geometric> DeepCopy() const = 0;
+		};
+
 		template <class T>
 		class VertexSet : public Geometric
 		{

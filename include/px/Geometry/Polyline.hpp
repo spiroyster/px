@@ -2,6 +2,7 @@
 #define PX_GEOMETRY_POLYLINE_HPP
 
 #include "VertexSet.hpp"
+#include "Triangle.hpp"
 
 #include <list>
 #include <vector>
@@ -43,7 +44,7 @@ namespace px
 					return PointOnSegmentResult::EqualVertexI;
 				if (Vector::Equals(j, point, tolerance))
 					return PointOnSegmentResult::EqualVertexJ;
-				return abs(Vector::Magnitude(point - i) + Vector::Magnitude(point - j) - Vector::Magnitude(j - i)) < tolerance ? PointOnSegmentResult::OnLine : PointOnSegmentResult::NotOnSegment;
+				return abs(Vector::Length(point - i) + Vector::Length(point - j) - Vector::Length(j - i)) < tolerance ? PointOnSegmentResult::OnLine : PointOnSegmentResult::NotOnSegment;
 			}
 
 
@@ -132,9 +133,9 @@ namespace px
 				if (polyline.size() < 2)
 					return result;
 				for (unsigned int p = 1; p < polyline.size(); ++p)
-					result += Vector::Magnitude(polyline[p] - polyline[p - 1]);
+					result += Vector::Length(polyline[p] - polyline[p - 1]);
 				if (close)
-					result += Vector::Magnitude(polyline.back() - polyline.front());
+					result += Vector::Length(polyline.back() - polyline.front());
 				return result;
 			}
 
@@ -143,7 +144,7 @@ namespace px
 			{
 				std::vector<float> result(polyline.size(), 0.0f);
 				for (unsigned int p = 1; p < polyline.size(); ++p)
-					result[p] = Vector::Magnitude(polyline[p] - polyline[p - 1]);
+					result[p] = Vector::Length(polyline[p] - polyline[p - 1]);
 				return result;
 			}
 
@@ -152,7 +153,7 @@ namespace px
 			{
 				std::vector<float> result(polyline.size(), 0.0f);
 				for (unsigned int p = 1; p < polyline.size(); ++p)
-					result[p] = result[p - 1] + Vector::Magnitude(polyline[p] - polyline[p - 1]);
+					result[p] = result[p - 1] + Vector::Length(polyline[p] - polyline[p - 1]);
 				return result;
 			}
 
@@ -161,7 +162,7 @@ namespace px
 			{
 				float result = 0.0f;
 				for (auto segment = segments.begin(); segment != segments.end(); ++segment)
-					result += Vector::Magnitude(points[(*segment)->i_] - points[(*segment)->j_]);
+					result += Vector::Length(points[(*segment)->i_] - points[(*segment)->j_]);
 				return result;
 			}
 
@@ -304,7 +305,7 @@ namespace px
 				for (unsigned int p = 1; p < points.size(); ++p)
 				{
 					T segment = points[p] - points[p - 1];
-					float segmentLength = Vector::Magnitude(segment);
+					float segmentLength = Vector::Length(segment);
 					float currentLength = 0;
 					segment = Vector::Unitise(segment);
 

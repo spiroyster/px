@@ -152,7 +152,7 @@ namespace px
 					workingAxis.Rotate(rotationAngle, rotationAxis);
 				}
 				// Check for gimbal lock..
-				else if (Vector::Magnitude(Vector::Subtract(i_, to.I())) > 1.0f)
+				else if (Vector::Length(Vector::Subtract(i_, to.I())) > 1.0f)
 				{
 					rotationAxis = k_;
 					rotationAngle = Trigonometry::Pi::f;

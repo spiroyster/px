@@ -68,6 +68,17 @@ namespace px
 		return result;
 	}
 
+	// Fill a vector from a list...
+	template<class A, class B>
+	std::vector<A> Fill(const std::vector<B>& b, std::function<A(const B&)> predicate)
+	{
+		std::vector<A> result(b.size());
+		unsigned int index = 0;
+		for (auto itr = b.begin(); b.end(); ++itr, ++index)
+			result[index] = predicate(*itr);
+		return result;
+	}
+
 	// Fill a single vector from a vector of vectors...
 	template<class T>
 	std::vector<T> Fill(const std::vector<std::vector<T>>& values)

@@ -138,7 +138,9 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\..\source\pxgl\GLContext.cpp" />
+    <ClCompile Include="..\..\source\pxgl\GLDrawObject.cpp" />
     <ClCompile Include="..\..\source\pxgl\GLInstance.cpp" />
+    <ClCompile Include="..\..\source\pxgl\GLTexture.cpp" />
     <ClCompile Include="..\..\source\pxgl\pxgl.cpp" />
   </ItemGroup>
   <ItemGroup>

@@ -40,7 +40,8 @@ namespace pxgl
 		virtual ~GLContext();
 
 		void Free();
-		void MakeThisContextCurrent() const;
+		void ContextMakeCurrent() const;
+		void ContextDisable() const;
 
 		const GLInfo& Info() const { return info_; }
 		const GLFunctions& Functions() const { return *functions_; }

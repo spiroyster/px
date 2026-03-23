@@ -48,7 +48,7 @@ namespace pxCore
 				});
 
 		drawObjects_[drawObject->DrawObjectName()] = drawObject;
-		px::Dispatch::DrawObjectRegistered(drawObject->DrawObjectName());
+		px::Dispatch::DrawObjectRegistered(*drawObject);
 	}
 
 	void DrawManager::UnregisterDrawObject(px::DrawObject* drawObject)
@@ -62,7 +62,7 @@ namespace pxCore
 				});
 
 		// Tell the world before we remove the object..
-		px::Dispatch::DrawObjectUnregistered(drawObject->DrawObjectName());
+		px::Dispatch::DrawObjectUnregistered(*drawObject);
 
 		drawObjects_.erase(itr);
 	}

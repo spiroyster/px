@@ -139,7 +139,8 @@
       <AdditionalDependencies>pxlib.lib;pxgl.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>copy $(SolutionDir)..\source\window\rhregular.ttf $(OutDir)</Command>
+      <Command>copy $(SolutionDir)..\source\window\rhregular.ttf $(OutDir)
+copy $(SolutionDir)..\source\window\font1.png $(OutDir)</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -162,7 +163,8 @@
       <AdditionalDependencies>pxlib.lib;pxgl.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>copy $(SolutionDir)..\source\window\rhregular.ttf $(OutDir)</Command>
+      <Command>copy $(SolutionDir)..\source\window\rhregular.ttf $(OutDir)
+copy $(SolutionDir)..\source\window\font1.png $(OutDir)</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

@@ -60,6 +60,7 @@ namespace pxgl
 
 	void Display::Render(void* dc)
 	{
+
 		//
 		//throw px::Exception(px::ErrorID::NYI);
 	}

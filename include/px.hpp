@@ -22,8 +22,9 @@
 #include "px/Event.hpp"
 #include "px/Task.hpp"
 #include "px/Data.hpp"
-#include "px/String.hpp"
+//#include "px/Util.hpp"
 #include "px/Display.hpp"
+#include "px/Geometry.hpp"
 
 #include <functional>
 

@@ -207,7 +207,7 @@ namespace px
 
 		}
 
-		std::shared_ptr<ImageRGBA32> Crop(const ImageRGBA32& image, int x, int y, unsigned int width, unsigned int height, const RGBA32& background)
+		static std::shared_ptr<ImageRGBA32> Crop(const ImageRGBA32& image, int x, int y, unsigned int width, unsigned int height, const RGBA32& background)
 		{
 			auto result = SingleColour(width, height, background);
 

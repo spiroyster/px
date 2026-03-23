@@ -35,15 +35,17 @@
     <ClInclude Include="..\..\include\px\Draw\View.hpp" />
     <ClInclude Include="..\..\include\px\Event.hpp" />
     <ClInclude Include="..\..\include\px\Exception.hpp" />
-    <ClInclude Include="..\..\include\px\FileIO.hpp" />
     <ClInclude Include="..\..\include\px\Geometry.hpp" />
     <ClInclude Include="..\..\include\px\Geometry\AABB.hpp" />
     <ClInclude Include="..\..\include\px\Geometry\Axis.hpp" />
+    <ClInclude Include="..\..\include\px\Geometry\Intersect.hpp" />
     <ClInclude Include="..\..\include\px\Geometry\Matrix.hpp" />
     <ClInclude Include="..\..\include\px\Geometry\Mesh.hpp" />
     <ClInclude Include="..\..\include\px\Geometry\Planar.hpp" />
     <ClInclude Include="..\..\include\px\Geometry\Polyline.hpp" />
     <ClInclude Include="..\..\include\px\Geometry\Primitive.hpp" />
+    <ClInclude Include="..\..\include\px\Geometry\Proximity.hpp" />
+    <ClInclude Include="..\..\include\px\Geometry\Triangle.hpp" />
     <ClInclude Include="..\..\include\px\Geometry\Trigonometry.hpp" />
     <ClInclude Include="..\..\include\px\Geometry\Vector.hpp" />
     <ClInclude Include="..\..\include\px\Geometry\VertexSet.hpp" />
@@ -51,11 +53,13 @@
     <ClInclude Include="..\..\include\px\Mutex.hpp" />
     <ClInclude Include="..\..\include\px\Parameter.hpp" />
     <ClInclude Include="..\..\include\px\Process.hpp" />
-    <ClInclude Include="..\..\include\px\String.hpp" />
     <ClInclude Include="..\..\include\px\Task.hpp" />
     <ClInclude Include="..\..\include\px\Timer.hpp" />
     <ClInclude Include="..\..\include\px\Type.hpp" />
+    <ClInclude Include="..\..\include\px\Util.hpp" />
+    <ClInclude Include="..\..\include\px\Util\FileIO.hpp" />
     <ClInclude Include="..\..\include\px\Util\Fill.hpp" />
+    <ClInclude Include="..\..\include\px\Util\String.hpp" />
     <ClInclude Include="..\..\include\px\Version.hpp" />
   </ItemGroup>
   <ItemGroup>

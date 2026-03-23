@@ -141,6 +141,10 @@
     <ClCompile Include="..\..\source\geomio\importstl.cpp" />
     <ClCompile Include="..\..\source\geomio\main.cpp" />
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\source\geomio\geomio.hpp" />
+    <ClInclude Include="..\..\source\geomio\objio.hpp" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

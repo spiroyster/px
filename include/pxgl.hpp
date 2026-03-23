@@ -6,6 +6,7 @@
 namespace pxgl
 {
 
+
 	class Display : public px::Display
 	{
 	public:

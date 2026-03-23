@@ -6,7 +6,7 @@
 #include "wglext.h"
 
 #include <include/px.hpp>
-#include <include/px/String.hpp>
+#include <include/px/Util/String.hpp>
 
 namespace pxgl
 {
@@ -212,13 +212,18 @@ namespace pxgl
 		px::Message(px::Str("[GL] Destroyed context (" + GetThreadIDAsString(threadID_) + ")."));
 	}
 
-	void GLContext::MakeThisContextCurrent() const
+	void GLContext::ContextMakeCurrent() const
 	{
 		if (static_cast<HDC>(hDC_))
 		{
 			if (wglMakeCurrent(static_cast<HDC>(hDC_), static_cast<HGLRC>(hglrc_)) == FALSE)
 				px::Message(px::Str("Display Context Unable to make current."));
 		}
+	}
+
+	void GLContext::ContextDisable() const
+	{
+		wglMakeCurrent(NULL, NULL);
 	}
 
 	void GLContext::ErrorCheck(unsigned int line) const

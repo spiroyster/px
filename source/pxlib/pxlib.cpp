@@ -745,7 +745,7 @@ namespace px
 		GetCoreInstance().AddDataModel(project);
 	}
 
-	void RemoveProject(const String& projectName)
+	void RemoveDataModel(const String& projectName)
 	{
 		// Remove this project (and flush it) from the core instance...
 		GetCoreInstance().RemoveDataModel(projectName);
@@ -787,7 +787,7 @@ namespace px
 	}
 
 	// Draw Object...
-	/*DrawObject::DrawObject(const String& name) : name_(name)
+	DrawObject::DrawObject(const String& name) : name_(name)
 	{
 		GetCoreInstance().RegisterDrawObject(this);
 	}
@@ -795,8 +795,7 @@ namespace px
 	DrawObject::~DrawObject()
 	{
 		GetCoreInstance().UnregisterDrawObject(this);
-	}*/
-
+	}
 
 	// View...
 	View::View(const String& name)
@@ -831,7 +830,7 @@ namespace px
 		Layout();
 	}
 
-	void View::Show(int displayID)
+	void View::Show(const Display& display)
 	{
 		// Dispatch the event to say set new active view...
 		Dispatch::ViewShow(*this);
@@ -867,6 +866,21 @@ namespace px
 		if (itr != actionInterfaceStack_.end())
 			actionInterfaceStack_.erase(itr);
 	}
-	// Control...
+	
+	// Draw objects...
+	void View::AddDrawObjects(const std::vector<std::shared_ptr<DrawObject>>& drawObjects)
+	{
+		
+	}
+
+	void View::RemoveDrawObjects(const std::vector<std::shared_ptr<DrawObject>>& drawObjects)
+	{
+
+	}
+
+	// Camera...
+
+
+
 
 }

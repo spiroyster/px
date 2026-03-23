@@ -442,7 +442,7 @@ namespace pxCore
 	{
 		auto dataModelItr = std::find_if(dataModels_.begin(), dataModels_.end(), [&projectName](const std::shared_ptr<DataModelHandle>& p) { return p->Name() == projectName; });
 
-		if (dataModelItr != dataModels_.end())
+		if (dataModelItr == dataModels_.end())
 			throw px::Exception(px::ErrorID::DataModelNotFound,
 				{
 					{ px::TagID::Name, projectName },

@@ -54,12 +54,6 @@
     <ClInclude Include="..\..\include\px\Type.hpp">
       <Filter>Header Files\px</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\px\String.hpp">
-      <Filter>Header Files\px\Util</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\px\FileIO.hpp">
-      <Filter>Header Files\px\Util</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\include\px\Draw\Colour.hpp">
       <Filter>Header Files\px\Draw</Filter>
     </ClInclude>
@@ -143,6 +137,24 @@
     </ClInclude>
     <ClInclude Include="..\..\include\px\Version.hpp">
       <Filter>Header Files\px\System</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\px\Geometry\Intersect.hpp">
+      <Filter>Header Files\px\Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\px\Geometry\Proximity.hpp">
+      <Filter>Header Files\px\Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\px\Util.hpp">
+      <Filter>Header Files\px</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\px\Util\FileIO.hpp">
+      <Filter>Header Files\px\Util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\px\Util\String.hpp">
+      <Filter>Header Files\px\Util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\px\Geometry\Triangle.hpp">
+      <Filter>Header Files\px\Geometry</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

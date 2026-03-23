@@ -4,8 +4,8 @@
 #include <filesystem>
 #include <fstream>
 
-#include "Exception.hpp"
-#include "String.hpp"
+#include <include/px.hpp>
+#include <include/px/Util/String.hpp>
 
 namespace px
 {
@@ -175,9 +175,9 @@ namespace px
 			}
 
 			const std::vector<px::String>& GetLines() const { return lines_; }
-			px::String GetText() const { return Join(lines_); }
+			px::String GetText() const { return Util::Join(lines_); }
 			void SetLines(const std::vector<px::String>& lines) { lines_ = lines; }
-			void SetText(const px::String& syntax) { lines_ = Split(syntax); }
+			void SetText(const px::String& syntax) { lines_ = Util::Split(syntax); }
 
 			void Write() const
 			{

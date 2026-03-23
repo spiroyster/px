@@ -16,7 +16,7 @@ namespace px
 	class Entity
 	{
 	public:
-		Entity(const String& name);
+		Entity(const String& name) {}
 		virtual ~Entity() {}
 
 		const String& Name() const { return name_; }

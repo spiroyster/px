@@ -25,9 +25,12 @@ SHOGL()
 	shogl()->window_size(1000, 800);
 
 	hud = std::make_shared<glo::hud>(shogl()->window_width(), shogl()->window_height(), glo::ttf_font("rhregular.ttf", 24));
+	//hud = std::make_unique<glo::hud>(800, 600, glo::bitmap_font(glo::image_read("font1.png"), 0, 512 - (3 * 32), 32, -32));
+
 	hud->char_dim(12, 20);
-	hud->char_stride(-1); //hud->char_stride(0);
-	
+	hud->char_stride(-1); 
+	//hud->char_stride(0);
+
 	// Create the px::Context...
 	px::Context context({},
 		[](const wchar_t* msg)
@@ -46,10 +49,11 @@ SHOGL()
 	px::Observer::Exception e(
 		[](const std::vector<px::Exception>& ee)
 		{
-			hud->fg(1.0, 0, 0);
+			*hud << "!!\n";
 			for (const auto& e : ee)
 				for (const auto& i : e.Meta())
-					*hud << px::ToStr(i.first) + " " + px::ToStr(i.second.GetAsString()) + "\n";
+					*hud << "| " + px::ToStr(i.first) + ": " + px::ToStr(i.second.GetAsString()) + "\n";
+			*hud << "!!\n";
 		});
 
 	// Create our pxgl context...
@@ -69,7 +73,7 @@ SHOGL()
 	px::Command({ px::Str("importobj"), px::Str("bunny.obj") });
 
 	// Get the data from the data model...
-	//auto drawObjects = px::DataModelHandle(px::Str("bunny.obj")).Immutable().Entities<px::DrawObject>();
+	auto drawObjects = px::DataModelHandle(px::Str("bunny.obj")).Immutable().Entities<px::DrawObject>();
 
 	// Create a view...
 	//px::View view(px::Str("defaultView"));

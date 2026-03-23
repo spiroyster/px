@@ -8,6 +8,7 @@
 namespace px
 {
 	class DrawObject;
+	class Display;
 
 	class View
 	{
@@ -97,7 +98,7 @@ namespace px
 
 		// Operations... 
 		virtual void Layout() {}
-		virtual void Show(int displayID);
+		virtual void Show(const Display& display);
 		virtual void Hide();
 
 		// Query coordinate operations
@@ -108,6 +109,13 @@ namespace px
 		//CoordinateNormalised GetViewCoordinateNormalised(const Coordinate& vc) const;
 		//Coordinate GetViewCoordinate(const CoordinateNormalised& vcNormalised) const;
 
+		void AddDrawObjects(const std::vector<std::shared_ptr<DrawObject>>& drawObjects);
+		void RemoveDrawObjects(const std::vector<std::shared_ptr<DrawObject>>& drawObjects);
+		const std::list<std::shared_ptr<DrawObject>>& DrawObjects() const { return drawObjects_; }
+
+		Camera& MutableCamera() { return camera_; }
+		const Camera& ImmutableCamera() const { return camera_; }
+		
 		// ActionInterface
 		// View action interfaces...
 		virtual void PushActionInterface(std::shared_ptr<ActionInterface> dai);
